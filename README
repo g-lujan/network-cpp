@@ -1,0 +1,7 @@
+## How to build (MSVC and CMake):
+
+### for Debug
+```
+cmake -B build-msvc -S . -G "Visual Studio 17 2022"
+cmake --build build-msvc
+```
