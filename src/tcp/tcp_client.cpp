@@ -1,5 +1,4 @@
 #include "tcp_client.hpp"
-#include "../buffer/buffer.hpp"
 #include "../utils/c_wrappers.hpp"
 
 #include <chrono>
@@ -16,7 +15,7 @@ IP::TCP::Client::Client(const std::string &hostname, const std::string &port) : 
 
 IP::TCP::Client::~Client() { C_WRAPPER::Socket::cleanup(); }
 
-bool IP::TCP::Client::read(MutableBuffer<char> &read_buffer)
+bool IP::TCP::Client::read(std::vector<char> &read_buffer)
 {
   int bytes_received = 0;
   for (auto const &socket : _socket_manager.get(QUERY_SOCKET::READABLE, 1s) | std::ranges::views::take(1)) {
@@ -25,7 +24,7 @@ bool IP::TCP::Client::read(MutableBuffer<char> &read_buffer)
   return bytes_received > 0;
 }
 
-bool IP::TCP::Client::write(const FixedBuffer<char> &write_buffer)
+bool IP::TCP::Client::write(const std::vector<char> &write_buffer)
 {
   int result = 0;
   for (auto const &socket : _socket_manager.get(QUERY_SOCKET::WRITEABLE, 1s) | std::ranges::views::take(1)) {

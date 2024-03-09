@@ -6,14 +6,15 @@
 #include "../utils/socket_manager.hpp"
 #include "socket.hpp"
 #include <string>
+#include <vector>
 
 namespace IP::TCP {
   class Client {
   public:
     Client(const std::string &hostname, const std::string &port);
     ~Client();
-    bool read(MutableBuffer<char> &read_buffer);
-    bool write(const FixedBuffer<char> &write_buffer);
+    bool read(std::vector<char> &read_buffer);
+    bool write(const std::vector<char> &write_buffer);
 
   private:
     std::string _hostname;

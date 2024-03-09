@@ -10,7 +10,7 @@
 #endif
 
 #include <string>
-#include "../buffer/buffer.hpp"
+#include <vector>
 #include "../utils/constants.hpp"
 
 namespace IP::TCP
@@ -34,9 +34,9 @@ namespace IP::TCP
             SOCKET accept();
 
             /* blocking */
-            int receive(MutableBuffer<char> &buffer);
+            int receive(std::vector<char> &buffer);
 
-            int send(FixedBuffer<char> &buffer);
+            int send(std::vector<char> &buffer);
 
             void close();
 

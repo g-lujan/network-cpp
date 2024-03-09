@@ -4,13 +4,14 @@
 #endif // _WIN32
 
 #include <iostream>
+#include <vector>
+#include <thread>
 
 constexpr int MAX_MESSAGE_LEN = 1000;
 
 void read(IP::TCP::Client &client)
 {
-  char data[MAX_MESSAGE_LEN] = {0};
-  MutableBuffer<char> mb(data, MAX_MESSAGE_LEN);
+  std::vector<char> mb(MAX_MESSAGE_LEN);
   while (1) {
     if (client.read(mb)) {
       std::cout << std::string(mb.data()) << '\n';
@@ -25,7 +26,7 @@ void write(IP::TCP::Client &client, std::string& username)
     std::getline(std::cin, user_input);
     std::string message = username + ": " + user_input;
     if (message.length() <= MAX_MESSAGE_LEN) {
-      const FixedBuffer<char> write_buffer(message.c_str(), message.length());
+      const std::vector<char> write_buffer(message.c_str(), message.c_str() + strlen(message.c_str()));
       if (!client.write(write_buffer)) {
         std::cerr << "Failed to send message!\n";
       }

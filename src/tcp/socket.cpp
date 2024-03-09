@@ -9,6 +9,7 @@
 #include "../utils/c_wrappers.hpp"
 #include "socket.hpp"
 #include <iostream>
+#include <vector>
 
 IP::TCP::Socket::Socket() {}
 
@@ -71,7 +72,7 @@ void IP::TCP::Socket::connect(const std::string &hostname, const std::string &po
     std::cerr << "socket() failed. Error number: " << C_WRAPPER::Socket::errorno() << std::endl;
     return;
   }
-  printf("Connecting...\n");
+
   if (::connect(_socket, peer_address->ai_addr, peer_address->ai_addrlen)) {
     std::cerr << "connect() failed. Error number: " << C_WRAPPER::Socket::errorno() << std::endl;
     return;
@@ -99,8 +100,8 @@ SOCKET IP::TCP::Socket::accept()
   return socket_client;
 }
 
-int IP::TCP::Socket::receive(MutableBuffer<char> &buffer) { return recv(_socket, buffer.data(), buffer.size(), 0); }
+int IP::TCP::Socket::receive(std::vector<char> &buffer) { return recv(_socket, buffer.data(), buffer.size(), 0); }
 
-int IP::TCP::Socket::send(FixedBuffer<char> &buffer) { return ::send(_socket, buffer.data(), buffer.size(), 0); }
+int IP::TCP::Socket::send(std::vector<char> &buffer) { return ::send(_socket, buffer.data(), buffer.size(), 0); }
 
 void IP::TCP::Socket::close() { C_WRAPPER::Socket::close(_socket); }
